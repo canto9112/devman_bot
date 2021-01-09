@@ -1,46 +1,43 @@
 import requests
-from pprint import pprint
 import telegram
-
-def user_reviews(token, url):
-    headers = {
-        'Authorization': token
-    }
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
-    user_reviews = response.json()
-    pprint(user_reviews)
-    return user_reviews['results'][0]['timestamp']
+from dotenv import load_dotenv
+import os
 
 
 def get_timestamp_to_request(url, dvm_token, tg_token, chat_id):
+    timestamp = None
     while True:
         headers = {'Authorization': dvm_token}
-        response = requests.get(url, headers=headers, timeout=95)
+        params = {'timestamp': timestamp}
+        response = requests.get(url, headers=headers, params=params, timeout=95)
         response.raise_for_status()
-
+        bot = telegram.Bot(token=tg_token)
         if response.json()['status'] == 'found':
-            pprint(response.json())
-
-            bot = telegram.Bot(token=tg_token)
-            bot.send_message(chat_id=chat_id, text='Работа проверена')
+            lesson_title = response.json()['new_attempts'][0]['lesson_title']
+            lesson_url = response.json()['new_attempts'][0]['lesson_url']
+            negative_result = response.json()['new_attempts'][0]['is_negative']
             timestamp = response.json()['last_attempt_timestamp']
-            print(timestamp)
-
+            if negative_result:
+                bot.send_message(chat_id=chat_id, text='У вас проверили работу - {}\n'
+                                                       'https://dvmn.org{}\n'
+                                                       'Есть ошибки!'.format(lesson_title, lesson_url))
+            else:
+                bot.send_message(chat_id=chat_id, text='У вас проверили работу - {}\n'
+                                                       'https://dvmn.org{}\n'
+                                                       'Работу приняли!'.format(lesson_title, lesson_url))
         elif response.json()['status'] == 'timeout':
             timestamp = response.json()['timestamp_to_request']
-            print(timestamp)
 
 
 if __name__ == '__main__':
-    chat_id = 335031317
-    tg_bot_token = '1505719734:AAF6FBmh5090CiuWUq2KWO_wUC-mH__A8kM'
-    devman_token = 'Token 3dabacd9bf959a599899d9bc8515081c471c4eb0'
-    URL_CHECKS_WORKS = 'https://dvmn.org/api/user_reviews/'
-    URL_LONG_POLLING = 'https://dvmn.org/api/long_polling/'
+    load_dotenv()
+    chat_id = os.getenv('chat_id')
+    tg_bot_token = os.getenv('tg_bot_token')
+    devman_token = os.getenv('devman_token')
+    url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
-            get_timestamp_to_request(URL_LONG_POLLING, devman_token, tg_bot_token, chat_id)
+            get_timestamp_to_request(url_long_polling, devman_token, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
             print('error ReadTimeout')
         except requests.exceptions.ConnectionError:
