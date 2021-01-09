@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 
-def get_timestamp_to_request(url, dvm_token, tg_token, chat_id):
+def get_check_result(url, dvm_token, tg_token, chat_id):
     timestamp = None
     while True:
         headers = {'Authorization': dvm_token}
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
-            get_timestamp_to_request(url_long_polling, devman_token, tg_bot_token, chat_id)
+            get_check_result(url_long_polling, devman_token, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
             print('error ReadTimeout')
         except requests.exceptions.ConnectionError:
