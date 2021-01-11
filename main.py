@@ -2,6 +2,7 @@ import requests
 import telegram
 from dotenv import load_dotenv
 import os
+from time import sleep
 
 
 def get_check_result(url, dvm_token, tg_token, chat_id):
@@ -42,3 +43,4 @@ if __name__ == '__main__':
             print('error ReadTimeout')
         except requests.exceptions.ConnectionError:
             print('error ConnectionError')
+            sleep(5)
