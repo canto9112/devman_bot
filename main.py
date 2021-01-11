@@ -31,9 +31,9 @@ def get_check_result(url, dvm_token, tg_token, chat_id):
 
 if __name__ == '__main__':
     load_dotenv()
-    chat_id = os.getenv('chat_id')
-    tg_bot_token = os.getenv('tg_bot_token')
-    devman_token = os.getenv('devman_token')
+    chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    devman_token = os.getenv('DEVMAN_TOKEN')
     url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
