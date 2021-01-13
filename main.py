@@ -13,21 +13,21 @@ def get_check_result(url, dvm_token, tg_token, chat_id):
         response = requests.get(url, headers=headers, params=params, timeout=95)
         response.raise_for_status()
         bot = telegram.Bot(token=tg_token)
-        response_json = response.json()
-        new_attempts = response_json['new_attempts'][0]
-        if response_json['status'] == 'found':
+        lesson_result = response.json()
+        new_attempts = lesson_result['new_attempts'][0]
+        if lesson_result['status'] == 'found':
             lesson_title = new_attempts['lesson_title']
             lesson_url = new_attempts['lesson_url']
             negative_result = new_attempts['is_negative']
-            timestamp = response_json['last_attempt_timestamp']
+            timestamp = lesson_result['last_attempt_timestamp']
             if negative_result:
                 bot.send_message(chat_id=chat_id,
                                  text='''У вас проверили работу - {} https://dvmn.org{}. Есть ошибки!'''.format(lesson_title, lesson_url))
             else:
                 bot.send_message(chat_id=chat_id,
                                  text='У вас проверили работу - {} https://dvmn.org{}. Работу приняли!'.format(lesson_title, lesson_url))
-        elif response_json['status'] == 'timeout':
-            timestamp = response_json['timestamp_to_request']
+        elif lesson_result['status'] == 'timeout':
+            timestamp = lesson_result['timestamp_to_request']
 
 
 if __name__ == '__main__':
