@@ -14,11 +14,11 @@ def get_check_result(url, dvm_token, tg_token, chat_id):
         response.raise_for_status()
         bot = telegram.Bot(token=tg_token)
         lesson_result = response.json()
-        new_attempts = lesson_result['new_attempts'][0]
+        new_attempt = lesson_result['new_attempts'][0]
         if lesson_result['status'] == 'found':
-            lesson_title = new_attempts['lesson_title']
-            lesson_url = new_attempts['lesson_url']
-            negative_result = new_attempts['is_negative']
+            lesson_title = new_attempt['lesson_title']
+            lesson_url = new_attempt['lesson_url']
+            negative_result = new_attempt['is_negative']
             timestamp = lesson_result['last_attempt_timestamp']
             if negative_result:
                 bot.send_message(chat_id=chat_id,
