@@ -7,16 +7,14 @@ from time import sleep
 
 def get_check_result(url, dvm_token, tg_token, chat_id):
     timestamp = None
+    print(url)
+    print(dvm_token)
+    print(tg_token)
+    print(chat_id)
     while True:
         headers = {'Authorization': dvm_token}
         params = {'timestamp': timestamp}
         response = requests.get(url, headers=headers, params=params, timeout=95)
-        print(response.url)
-        print(url)
-        print(dvm_token)
-        print(tg_token)
-        print(chat_id)
-
         response.raise_for_status()
         bot = telegram.Bot(token=tg_token)
         lesson_result = response.json()
