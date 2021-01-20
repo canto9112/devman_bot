@@ -35,7 +35,7 @@ if __name__ == '__main__':
     chat_id = os.getenv('TELEGRAM_CHAT_ID')
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
-    url_long_polling = 'https://dvmn.org/api/long_polling/'
+    url_long_polling = 'https://dvmn.org/api/long_polling'
     while True:
         try:
             get_check_result(url_long_polling, devman_token, tg_bot_token, chat_id)
