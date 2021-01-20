@@ -11,6 +11,12 @@ def get_check_result(url, dvm_token, tg_token, chat_id):
         headers = {'Authorization': dvm_token}
         params = {'timestamp': timestamp}
         response = requests.get(url, headers=headers, params=params, timeout=95)
+        print(response.url)
+        print(url)
+        print(dvm_token)
+        print(tg_token)
+        print(chat_id)
+
         response.raise_for_status()
         bot = telegram.Bot(token=tg_token)
         lesson_result = response.json()
@@ -35,7 +41,7 @@ if __name__ == '__main__':
     chat_id = os.getenv('TELEGRAM_CHAT_ID')
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
-    url_long_polling = 'https://dvmn.org/api/long_polling'
+    url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
             get_check_result(url_long_polling, devman_token, tg_bot_token, chat_id)
