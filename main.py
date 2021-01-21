@@ -3,7 +3,10 @@ import telegram
 from dotenv import load_dotenv
 import os
 from time import sleep
-from pprint import pprint
+import logging
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def get_check_result(url, tg_token, chat_id):
@@ -39,6 +42,7 @@ if __name__ == '__main__':
     url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
+            logging.info('Бот запущен')
             get_check_result(url_long_polling, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
             print('error ReadTimeout')
