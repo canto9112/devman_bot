@@ -33,7 +33,6 @@ def get_check_result(url, tg_token, chat_id):
 
 if __name__ == '__main__':
     load_dotenv()
-    os.environ['DEVMAN_TOKEN']
     chat_id = os.getenv('TELEGRAM_CHAT_ID')
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
