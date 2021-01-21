@@ -40,7 +40,7 @@ if __name__ == '__main__':
     url_long_polling = 'https://dvmn.org/api/long_polling/'
     while True:
         try:
-            get_check_result(url_long_polling, devman_token, tg_bot_token, chat_id)
+            get_check_result(url_long_polling, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
             print('error ReadTimeout')
         except requests.exceptions.ConnectionError:
