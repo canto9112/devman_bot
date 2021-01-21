@@ -6,10 +6,10 @@ from time import sleep
 from pprint import pprint
 
 
-def get_check_result(url, dvm_token, tg_token, chat_id):
+def get_check_result(url, tg_token, chat_id):
     timestamp = None
     while True:
-        headers = {'Authorization': dvm_token}
+        headers = {'Authorization': 'Token 3dabacd9bf959a599899d9bc8515081c471c4eb0'}
         params = {'timestamp': timestamp}
         response = requests.get(url, headers=headers, params=params, timeout=95)
         response.raise_for_status()
