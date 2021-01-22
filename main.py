@@ -4,10 +4,7 @@ from dotenv import load_dotenv
 import os
 from time import sleep
 import logging
-
-
-logging.basicConfig(level=logging.DEBUG)
-
+from settings_log import push_log_telegtam
 
 def get_check_result(url, tg_token, chat_id):
     timestamp = None
@@ -40,12 +37,17 @@ if __name__ == '__main__':
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
     url_long_polling = 'https://dvmn.org/api/long_polling/'
+
+
+    logger = push_log_telegtam(tg_bot_token, chat_id)
+    logger.debug('Старт бота')
     while True:
         try:
-            logging.info('Бот запущен')
             get_check_result(url_long_polling, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
-            print('error ReadTimeout')
+            logger.error('Бот упал с ошибкой - ReadTimeout')
         except requests.exceptions.ConnectionError:
-            print('error ConnectionError')
+            logger.error('Бот упал с ошибкой - ConnectionError')
             sleep(5)
+        except Exception:
+            logger.exception('Бот упал с ошибкой')
