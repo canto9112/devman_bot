@@ -7,7 +7,7 @@
 У вас уже должен быть установлен Python 3. Если его нет, то установите.
 Используйте `pip` (или `pip3`, если у вас проблемы с Python2). Так же нужно установить необходимые пакеты:
 ```
-pip install -r requirements.txt
+pip3** install -r requirements.txt
 ```
 
 ### Как пользоваться скриптом
@@ -17,7 +17,7 @@ pip install -r requirements.txt
 Для работы скрипта нужно создать файл ```.env``` в директории где лежит скрипт.
 Этот файл хранит ваш серкетный токен от сервиса dvmn.org. Вставьте ваш токен в файл ```.env```:
 ```
-DEVMAN_TOKEN = 'Token 4dabacd9bf959a599899d9bc8515081c471c4eb9'
+DEVMAN_TOKEN='Token 4dabacd9bf959a599899d9bc8515081c471c4eb9'
 ```
 В файл ```.env``` также нужно вставить ваш токен от Телеграм Бота. 
 
@@ -35,18 +35,18 @@ DEVMAN_TOKEN = 'Token 4dabacd9bf959a599899d9bc8515081c471c4eb9'
 
 Вы создадите бота в Telegram, получите его API ключ. Вставьте ваш токен бота в файл ```.env```:
 ```
-TELEGRAM_BOT_TOKEN = '95132391:wP3db3301vnrob33BZdb33KwP3db3F1I'
+TELEGRAM_BOT_TOKEN='95132391:wP3db3301vnrob33BZdb33KwP3db3F1I'
 ```
 Вам необходимо получить свой chat_id. 
 Чтобы получить свой chat_id, напишите в Telegram специальному боту: [@userinfobot](https://telegram.me/userinfobot)
 и вставить его в файл ```.env```:
 ```
-TELEGRAM_CHAT_ID = 335031317
+TELEGRAM_CHAT_ID=335031317
 ```
 ### Запуск скрипта
 Для запуска скрипта вам необходимо запустить командную строку и перейти в каталог со скриптом:
 ```
-[путь_до_файла] python main.py 
+[путь_до_файла] python3 main.py 
 ```
 
 ### Цели проекта
