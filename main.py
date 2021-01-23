@@ -38,10 +38,8 @@ if __name__ == '__main__':
 
     while True:
         try:
-            logger.debug(devman_token)
             logger.debug('Старт бота')
             get_check_result(url_long_polling, tg_bot_token, chat_id, devman_token)
-            get_check_result(url_long_polling, tg_bot_token, chat_id)
         except requests.exceptions.ReadTimeout:
             logger.error('Бот упал с ошибкой - ReadTimeout')
         except requests.exceptions.ConnectionError:
