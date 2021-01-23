@@ -2,14 +2,13 @@ import requests
 import telegram
 from dotenv import load_dotenv
 import os
-from time import sleep
-import logging
 from settings_log import push_log_telegtam
 
-def get_check_result(url, tg_token, chat_id):
+
+def get_check_result(url, tg_token, chat_id, devman_token):
     timestamp = None
     while True:
-        headers = {'Authorization': 'Token 3dabacd9bf959a599899d9bc8515081c471c4eb0'}
+        headers = {'Authorization': devman_token}
         params = {'timestamp': timestamp}
         response = requests.get(url, headers=headers, params=params, timeout=95)
         response.raise_for_status()
@@ -22,11 +21,9 @@ def get_check_result(url, tg_token, chat_id):
             negative_result = new_attempt['is_negative']
             timestamp = lesson_result['last_attempt_timestamp']
             if negative_result:
-                bot.send_message(chat_id=chat_id,
-                                 text='''У вас проверили работу - {} https://dvmn.org{}. Есть ошибки!'''.format(lesson_title, lesson_url))
+                bot.send_message(chat_id=chat_id, text=(f'У вас проверили работу - {lesson_title} https://dvmn.org{lesson_url}. Есть ошибки!'))
             else:
-                bot.send_message(chat_id=chat_id,
-                                 text='У вас проверили работу - {} https://dvmn.org{}. Работу приняли!'.format(lesson_title, lesson_url))
+                bot.send_message(chat_id=chat_id, text=(f'У вас проверили работу - {lesson_title} https://dvmn.org{lesson_url}. Работу приняли!'))
         elif lesson_result['status'] == 'timeout':
             timestamp = lesson_result['timestamp_to_request']
 
@@ -37,17 +34,11 @@ if __name__ == '__main__':
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
     url_long_polling = 'https://dvmn.org/api/long_polling/'
-
-
     logger = push_log_telegtam(tg_bot_token, chat_id)
-    logger.debug('Старт бота')
+
     while True:
         try:
-            get_check_result(url_long_polling, tg_bot_token, chat_id)
-        except requests.exceptions.ReadTimeout:
-            logger.error('Бот упал с ошибкой - ReadTimeout')
-        except requests.exceptions.ConnectionError:
-            logger.error('Бот упал с ошибкой - ConnectionError')
-            sleep(5)
+            logger.debug('Старт бота')
+            get_check_result(url_long_polling, tg_bot_token, chat_id, devman_token)
         except Exception:
             logger.exception('Бот упал с ошибкой')

@@ -8,8 +8,7 @@ def push_log_telegtam(tg_bot_token, chat_id):
         def emit(self, record):
             log_entry = self.format(record)
             bot.send_message(chat_id=chat_id, text=log_entry)
-    for key in logging.Logger.manager.loggerDict:
-        print(key)
+
     logging.getLogger('dotenv').setLevel('CRITICAL')
     logging.getLogger('telegram').setLevel('CRITICAL')
     logging.getLogger('urllib3').setLevel('CRITICAL')
