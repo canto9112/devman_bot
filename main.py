@@ -3,7 +3,7 @@ import telegram
 from dotenv import load_dotenv
 import os
 from settings_log import push_log_telegtam
-
+from time import sleep
 
 def get_check_result(url, tg_token, chat_id, devman_token):
     timestamp = None
@@ -41,6 +41,13 @@ if __name__ == '__main__':
             logger.debug(devman_token)
             logger.debug('Старт бота')
             get_check_result(url_long_polling, tg_bot_token, chat_id, devman_token)
+            get_check_result(url_long_polling, tg_bot_token, chat_id)
+        except requests.exceptions.ReadTimeout:
+            logger.error('Бот упал с ошибкой - ReadTimeout')
+        except requests.exceptions.ConnectionError:
+            logger.error('Бот упал с ошибкой - ConnectionError')
+            sleep(5)
         except Exception:
             logger.exception('Бот упал с ошибкой')
+            sleep(5)
             break
