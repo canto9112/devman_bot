@@ -35,10 +35,12 @@ if __name__ == '__main__':
     devman_token = os.getenv('DEVMAN_TOKEN')
     url_long_polling = 'https://dvmn.org/api/long_polling/'
     logger = push_log_telegtam(tg_bot_token, chat_id)
-    logger.debug(devman_token)
+
     while True:
         try:
+            logger.debug(devman_token)
             logger.debug('Старт бота')
             get_check_result(url_long_polling, tg_bot_token, chat_id, devman_token)
         except Exception:
             logger.exception('Бот упал с ошибкой')
+            break
