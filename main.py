@@ -2,7 +2,7 @@ import requests
 import telegram
 from dotenv import load_dotenv
 import os
-from settings_log import push_log_telegtam
+from logger_bot import push_log_telegtam
 from time import sleep
 
 def get_check_result(url, tg_token, chat_id, devman_token):
@@ -34,18 +34,13 @@ if __name__ == '__main__':
     tg_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     devman_token = os.getenv('DEVMAN_TOKEN')
     url_long_polling = 'https://dvmn.org/api/long_polling/'
-    logger = push_log_telegtam(tg_bot_token, chat_id)
+    telegram_logger = push_log_telegtam(tg_bot_token, chat_id)
 
     while True:
         try:
-            logger.debug('Старт бота')
+            telegram_logger.debug('Старт бота')
             get_check_result(url_long_polling, tg_bot_token, chat_id, devman_token)
-        except requests.exceptions.ReadTimeout:
-            logger.error('Бот упал с ошибкой - ReadTimeout')
-        except requests.exceptions.ConnectionError:
-            logger.error('Бот упал с ошибкой - ConnectionError')
-            sleep(5)
         except Exception:
-            logger.exception('Бот упал с ошибкой')
-            sleep(5)
-            break
+            telegram_logger.exception('Бот упал с ошибкой:')
+            sleep(200)
+
