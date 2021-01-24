@@ -1,19 +1,12 @@
 import logging
-import telegram
 
 
-def push_log_telegtam(tg_bot_token, chat_id):
-    bot = telegram.Bot(token=tg_bot_token)
-    class MyLogsHandler(logging.Handler):
-        def emit(self, record):
-            log_entry = self.format(record)
-            bot.send_message(chat_id=chat_id, text=log_entry)
+class MyLogsHandler(logging.Handler):
+    def __init__(self, bot, chat_id):
+        self.bot = bot
+        self.chat_id = chat_id
 
-    logging.getLogger('dotenv').setLevel('CRITICAL')
-    logging.getLogger('telegram').setLevel('CRITICAL')
-    logging.getLogger('urllib3').setLevel('CRITICAL')
+    def emit(self, record,):
+        log_entry = self.format(record)
+        self.bot.send_message(chat_id=self.chat_id, text=log_entry)
 
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s  %(levelname)s %(message)s')
-    logger = logging.getLogger('BOT')
-    logger.addHandler(MyLogsHandler())
-    return logger
